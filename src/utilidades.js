@@ -19,17 +19,34 @@ const fs = require('fs');
  * const matriz = crearMatrizVacia(3, 3, 0);
  * // Retorna: [[0,0,0], [0,0,0], [0,0,0]]
  */
-function crearMatrizVacia(filas, columnas, valorInicial = 0) {
+function crearMatrizVacia(filas, columnas, valorInicial = null) {
   const matriz = [];
+
   for (let i = 0; i < filas; i++) {
     const fila = [];
+
     for (let j = 0; j < columnas; j++) {
-      fila.push(valorInicial);
+
+      if (valorInicial === null) {
+        // Crear pixel vacío (negro)
+        fila.push({
+          r: 0,
+          g: 0,
+          b: 0,
+          a: 255
+        });
+      } else {
+        fila.push(valorInicial);
+      }
+
     }
+
     matriz.push(fila);
   }
+
   return matriz;
 }
+
 
 /**
  * Valida que una matriz sea válida
