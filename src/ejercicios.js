@@ -238,19 +238,19 @@ function ajustarBrillo(matriz, factor) {
   // TODO: Implementar ajuste de brillo
   
   // 1. Crear matriz resultado
-  // const resultado = copiarMatriz(matriz);
+  const resultado = copiarMatriz(matriz);
   
   // 2. Para cada pixel, multiplicar R, G, B por el factor
-  // for (let i = 0; i < resultado.length; i++) {
-  //   for (let j = 0; j < resultado[i].length; j++) {
-  //     resultado[i][j].r = limitarValorColor(matriz[i][j].r * factor);
-  //     resultado[i][j].g = limitarValorColor(matriz[i][j].g * factor);
-  //     resultado[i][j].b = limitarValorColor(matriz[i][j].b * factor);
-  //     // El canal alpha NO se modifica
-  //   }
-  // }
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      resultado[i][j].r = limitarValorColor(matriz[i][j].r * factor);
+      resultado[i][j].g = limitarValorColor(matriz[i][j].g * factor);
+      resultado[i][j].b = limitarValorColor(matriz[i][j].b * factor);
+      // El canal alpha NO se modifica
+    }
+  }
   
-  return []; // REEMPLAZAR
+  return resultado;
 }
 
 /**
@@ -274,7 +274,18 @@ function ajustarBrillo(matriz, factor) {
 function invertirColores(matriz) {
   // TODO: Implementar inversión de colores
   
-  return []; // REEMPLAZAR
+  const resultado = copiarMatriz(matriz);
+
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      resultado[i][j].r = 255 - matriz[i][j].r;
+      resultado[i][j].g = 255 - matriz[i][j].g;
+      resultado[i][j].b = 255 - matriz[i][j].b;
+      // El canal alpha NO se modifica
+    }
+  }
+
+  return resultado;
 }
 
 /**
@@ -294,14 +305,22 @@ function invertirColores(matriz) {
 function convertirEscalaGrises(matriz) {
   // TODO: Implementar conversión a escala de grises
   
-  // Para cada pixel:
-  // 1. Calcular el valor de gris
-  // const gris = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
-  // 
-  // 2. Asignar ese valor a los tres canales
-  // pixelNuevo = {r: gris, g: gris, b: gris, a: pixel.a}
-  
-  return []; // REEMPLAZAR
+  const resultado = copiarMatriz(matriz);
+
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const pixel = matriz[i][j];
+      const gris = Math.round(0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b);
+      resultado[i][j] = {
+        r: gris,
+        g: gris,
+        b: gris,
+        a: pixel.a
+      };
+    }
+  }
+
+  return resultado;
 }
 
 // ============================================
