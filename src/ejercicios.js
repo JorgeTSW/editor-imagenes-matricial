@@ -450,18 +450,28 @@ function mezclarImagenes(matriz1, matriz2, factor) {
   // TODO: Implementar mezcla de imágenes
   
   // 1. Verificar que tengan las mismas dimensiones
-  // const dims1 = obtenerDimensiones(matriz1);
-  // const dims2 = obtenerDimensiones(matriz2);
-  // if (dims1.filas !== dims2.filas || dims1.columnas !== dims2.columnas) {
-  //   throw new Error('Las imágenes deben tener el mismo tamaño');
-  // }
+  const dims1 = obtenerDimensiones(matriz1);
+  const dims2 = obtenerDimensiones(matriz2);
+  if (dims1.filas !== dims2.filas || dims1.columnas !== dims2.columnas) {
+    throw new Error('Las imágenes deben tener el mismo tamaño');
+  }
   
   // 2. Para cada pixel:
-  // r = r1 * (1 - factor) + r2 * factor
-  // g = g1 * (1 - factor) + g2 * factor
-  // b = b1 * (1 - factor) + b2 * factor
+  const resultado = crearMatrizVacia(dims1.filas, dims1.columnas);
+  for (let i = 0; i < dims1.filas; i++) {
+    for (let j = 0; j < dims1.columnas; j++) {
+      const p1 = matriz1[i][j];
+      const p2 = matriz2[i][j];
+      resultado[i][j] = {
+        r: limitarValorColor(p1.r * (1 - factor) + p2.r * factor),
+        g: limitarValorColor(p1.g * (1 - factor) + p2.g * factor),
+        b: limitarValorColor(p1.b * (1 - factor) + p2.b * factor),
+        a: limitarValorColor(p1.a * (1 - factor) + p2.a * factor)
+      };
+    }
+  }
   
-  return []; // REEMPLAZAR
+  return resultado;
 }
 
 /**
@@ -483,7 +493,24 @@ function mezclarImagenes(matriz1, matriz2, factor) {
 function aplicarSepia(matriz) {
   // TODO: Implementar filtro sepia
   
-  return []; // REEMPLAZAR
+  const resultado = copiarMatriz(matriz);
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const pixel = matriz[i][j];
+      const r = pixel.r;
+      const g = pixel.g;
+      const b = pixel.b;
+
+      resultado[i][j] = {
+        r: limitarValorColor(0.393 * r + 0.769 * g + 0.189 * b),
+        g: limitarValorColor(0.349 * r + 0.686 * g + 0.168 * b),
+        b: limitarValorColor(0.272 * r + 0.534 * g + 0.131 * b),
+        a: pixel.a
+      };
+    }
+  }
+
+  return resultado;
 }
 
 /**
@@ -510,13 +537,34 @@ function detectarBordes(matriz, umbral = 50) {
   // TODO: Implementar detección de bordes
   
   // 1. Convertir a escala de grises primero
-  // const grises = convertirEscalaGrises(matriz);
-  
+  const grises = convertirEscalaGrises(matriz);
+  const filas = grises.length;
+  const columnas = grises[0].length;
+  const resultado = crearMatrizVacia(filas, columnas);
+
   // 2. Para cada pixel (excepto bordes de la imagen):
-  //    - Comparar con pixel derecho y pixel inferior
-  //    - Si diferencia > umbral, marcar como borde
-  
-  return []; // REEMPLAZAR
+  for (let i = 0; i < filas - 1; i++) {
+    for (let j = 0; j < columnas - 1; j++) {
+      const actual = grises[i][j].r;
+      const derecha = grises[i][j + 1].r;
+      const abajo = grises[i + 1][j].r;
+
+      const diferencia = Math.abs(actual - derecha) + Math.abs(actual - abajo);
+
+      const valor = diferencia > umbral ? 255 : 0;
+      resultado[i][j] = { r: valor, g: valor, b: valor, a: 255 };
+    }
+  }
+
+  // Rellenar última fila y columna con negro
+  for (let j = 0; j < columnas; j++) {
+    resultado[filas - 1][j] = { r: 0, g: 0, b: 0, a: 255 };
+  }
+  for (let i = 0; i < filas; i++) {
+    resultado[i][columnas - 1] = { r: 0, g: 0, b: 0, a: 255 };
+  }
+
+  return resultado;
 }
 
 // ============================================
