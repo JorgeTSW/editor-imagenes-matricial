@@ -173,3 +173,5 @@ El determinante cambia de signo:\
 ------------------------------------------------------------------------
 
 # ✔️ Documento completo generado correctamente
+git add README.md
+        
