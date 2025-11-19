@@ -349,7 +349,13 @@ function voltearHorizontal(matriz) {
   // Pista: Puedes usar .reverse() en cada fila
   // o construir manualmente invirtiendo el orden
   
-  return []; // REEMPLAZAR
+  const resultado = copiarMatriz(matriz);
+
+  for (let i = 0; i < resultado.length; i++) {
+    resultado[i] = resultado[i].slice().reverse();
+  }
+
+  return resultado;
 }
 
 /**
@@ -370,7 +376,9 @@ function voltearHorizontal(matriz) {
 function voltearVertical(matriz) {
   // TODO: Implementar volteo vertical
   
-  return []; // REEMPLAZAR
+  const resultado = copiarMatriz(matriz).slice().reverse();
+
+  return resultado;
 }
 
 /**
@@ -399,7 +407,19 @@ function rotar90Grados(matriz) {
   // Opción 2: Construir directamente la matriz rotada
   //   nuevoPixel[j][alto - 1 - i] = pixelOriginal[i][j]
   
-  return []; // REEMPLAZAR
+  const filas = matriz.length;
+  const columnas = matriz[0].length;
+  const rotada = [];
+
+  for (let j = 0; j < columnas; j++) {
+    const nuevaFila = [];
+    for (let i = filas - 1; i >= 0; i--) {
+      nuevaFila.push(matriz[i][j]);
+    }
+    rotada.push(nuevaFila);
+  }
+
+  return rotada;
 }
 
 // ============================================
