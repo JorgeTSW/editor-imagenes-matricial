@@ -1,107 +1,71 @@
-# Editor de Imágenes con Álgebra Matricial
+# Documentación de Ejercicios - David Morales Guerrero
 
-**Fundamentos de Álgebra - Unidad III: Álgebra Lineal Aplicada**  
-Tecnológico de Software
+## Información General
 
----
-
-## Objetivo
-
-Manipular imágenes PNG aplicando operaciones matriciales del álgebra lineal.
-
----
-
-## Instrucciones
-
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/TU-USUARIO/editor-imagenes-matricial.git
-cd editor-imagenes-matricial
-npm install
-```
-
-### 2. Completar los ejercicios
-- Abre el archivo `src/ejercicios.js`
-- Completa cada función donde dice `// TODO:`
-- **NO modifiques** los archivos `utilidades.js`, `matriz.js` ni los tests
-
-### 3. Probar tu código
-```bash
-npm test
-```
-
-### 4. Guardar tus cambios
-```bash
-git add src/ejercicios.js
-git commit -m "Completar ejercicios de la sección X"
-git push origin main
-```
-
-### 5. Ver tu calificación
-- Ve a tu repositorio en GitHub
-- Click en la pestaña **Actions**
-- Tu calificación aparecerá en los resultados
+- **Materia:** Fundamentos de Álgebra  
+- **Tema:** Matrices y operaciones matriciales en Excel  
+- **Fecha:** 24 de noviembre de 2025  
+- **Estudiante:** David Morales Guerrero  
+- **Grupo:** 1-A  
 
 ---
 
-## Sistema de Calificación
+## Objetivo de la Documentación
 
-| Sección | Puntos |
-|---------|--------|
-| 1. Commits bien documentados | 20 pts |
-| 2. README actualizado y personalizado | 25 pts |
-| 3. Editor funcional | 30 pts |
-| 4. Funciones bien documentadas | 25 pts |
-| **TOTAL** | **100 pts** |
+El objetivo de esta documentación es explicar cómo se utilizaron matrices en Microsoft Excel para representar imágenes de 30x30, así como describir las operaciones matriciales aplicadas sobre ellas.  
+Se detalla la estructura de las hojas de cálculo, las fórmulas empleadas y la relación entre las matrices originales, sus traspuestas y las operaciones de suma, resta, multiplicación escalar y combinación lineal.
 
 ---
 
-## Estructura del Proyecto
+## Ejercicios Realizados
 
-```
-src/
-├── ejercicios.js          ← COMPLETA ESTE ARCHIVO
-├── ejercicios.test.js     ← NO MODIFICAR
-├── utilidades.js          ← NO MODIFICAR (funciones auxiliares)
-└── matriz.js              ← NO MODIFICAR (operaciones matriciales)
+### 1. Representación de imágenes como matrices 30x30
 
-imagenes/
-├── entrada/               ← Imágenes de prueba
-└── salida/                ← Resultados generados
+En el archivo `PUNISHER_MATRICES_COMPLETO.xlsx` se trabajó con 5 imágenes, cada una representada como una matriz de **30 filas x 30 columnas**.  
+Cada celda contiene un número entero que representa un color.
 
-guias/
-├── GUIA_ESTUDIANTES.md    ← Ayuda detallada
-├── GUIA_INSTRUCTOR.md     ← Soluciones (solo instructor)
-└── CONCEPTOS_ALGEBRA.md   ← Teoría de álgebra lineal
-```
+#### 1.1 Hojas de imágenes originales
 
----
+Las 5 hojas base son:
 
-## Recursos
+- **Punisher1**  
+- **Deadpool2**  
+- **Alien3**  
+- **Navi4**  
+- **Laptop5**
 
-- **Guía Estudiantes:** `guias/GUIA_ESTUDIANTES.md`
-- **Conceptos Álgebra:** `guias/CONCEPTOS_ALGEBRA.md`
-- **Documentación pngjs:** [npmjs.com/package/pngjs](https://www.npmjs.com/package/pngjs)
+Cada hoja contiene una matriz 30x30 de valores numéricos.  
+En el caso de la imagen de Punisher, por ejemplo, se utiliza la siguiente codificación de colores:
 
----
-
-## Reglas Importantes
-
-1. ✅ Solo modifica `src/ejercicios.js`
-2. ❌ No modifiques los archivos de tests
-3. ❌ No modifiques `utilidades.js` ni `matriz.js`
-4. ✅ Puedes hacer múltiples commits
-5. ✅ Todos los tests deben pasar para obtener puntos
+- `0` → blanco  
+- `1` → negro  
+- `2` → rojo  
+- `3` → verde  
+- `4` → gris  
 
 ---
 
-## ¿Necesitas Ayuda?
+### 2. Matrices traspuestas (AT)
 
-1. Lee `guias/GUIA_ESTUDIANTES.md`
-2. Consulta `guias/CONCEPTOS_ALGEBRA.md`
-3. Pregunta a tus compañeros
-4. Contacta al profesor: jorge.pedroza@tecdesoftware.edu.mx
+Para cada imagen original se generó una hoja con su **matriz traspuesta**, donde se intercambian filas por columnas.
 
----
+Las hojas de traspuestas son:
 
-**¡Éxito en tu proyecto!**
+- **Punisher1_T**  
+- **Deadpool2_T**  
+- **Alien3_T**  
+- **Navi4_T**  
+- **Laptop5_T**
+
+#### Fórmula usada:
+
+La traspuesta de una matriz \( A \) se define como:
+
+\[
+A^T(i,j) = A(j,i)
+\]
+
+Ejemplo de fórmula usada en Excel:
+
+```excel
+=Punisher1!A2

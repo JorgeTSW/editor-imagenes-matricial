@@ -1,9 +1,9 @@
 // ============================================
 // EDITOR DE IMÁGENES CON ÁLGEBRA MATRICIAL
 // ============================================
-// Nombre del estudiante: _________________
-// Fecha: _________________
-// Grupo: _________________
+// Nombre del estudiante: David Morles Guerrero
+// Fecha: 17/11/2025
+// Grupo: 1-A
 
 const { PNG } = require('pngjs');
 const fs = require('fs');
@@ -56,158 +56,120 @@ const {
  * // matriz[0][0] = {r: 0, g: 0, b: 128, a: 255}
  */
 function imagenAMatriz(rutaImagen) {
-  // TODO: Implementar la conversión de PNG a matriz
-  
-  // 1. Leer el archivo PNG
-  // const buffer = fs.readFileSync(rutaImagen);
-  // const png = PNG.sync.read(buffer);
-  
+  // 1. Leer el archivo PNG desde la ruta
+  const buffer = fs.readFileSync(rutaImagen);
+  const png = PNG.sync.read(buffer);
+
   // 2. Crear la matriz vacía
-  // const matriz = [];
-  
-  // 3. Recorrer cada fila (y) y cada columna (x)
-  // for (let y = 0; y < png.height; y++) {
-  //   const fila = [];
-  //   for (let x = 0; x < png.width; x++) {
-  //     // 4. Calcular el índice en el buffer
-  //     const idx = (png.width * y + x) << 2; // equivalente a * 4
-  //     
-  //     // 5. Extraer los valores RGBA
-  //     const pixel = {
-  //       r: png.data[idx],
-  //       g: png.data[idx + 1],
-  //       b: png.data[idx + 2],
-  //       a: png.data[idx + 3]
-  //     };
-  //     
-  //     fila.push(pixel);
-  //   }
-  //   matriz.push(fila);
-  // }
-  
-  // 6. Retornar la matriz
-  // return matriz;
-  
-  return []; // REEMPLAZAR CON TU CÓDIGO
+  const matriz = [];
+
+  // 3. Recorrer cada fila
+  for (let y = 0; y < png.height; y++) {
+    const fila = [];
+
+    // 4. Recorrer cada columna
+    for (let x = 0; x < png.width; x++) {
+      // 5. Calcular índice en el buffer
+      const idx = (png.width * y + x) * 4;
+
+      // 6. Crear pixel en formato objeto
+      const pixel = {
+        r: png.data[idx],
+        g: png.data[idx + 1],
+        b: png.data[idx + 2],
+        a: png.data[idx + 3]
+      };
+
+      fila.push(pixel);
+    }
+
+    matriz.push(fila);
+  }
+
+  // 7. Retornar matriz final
+  return matriz;
 }
 
-/**
- * Ejercicio 1.2: Convertir matriz de píxeles a imagen PNG (5 puntos)
- * 
- * Proceso inverso: tomar una matriz de píxeles y guardarla como PNG.
- * 
- * @param {Array<Array<Object>>} matriz - Matriz de píxeles {r,g,b,a}
- * @param {string} rutaSalida - Ruta donde guardar el PNG
- * 
- * Pistas:
- * - Usa new PNG({width, height}) para crear la imagen
- * - Recorre la matriz y llena png.data con los valores
- * - Usa PNG.sync.write(png) para generar el buffer
- * - Usa fs.writeFileSync() para guardar el archivo
- * 
- * @example
- * const matriz = imagenAMatriz('entrada.png');
- * matrizAImagen(matriz, 'imagenes/salida/copia.png');
- */
+
 function matrizAImagen(matriz, rutaSalida) {
-  // TODO: Implementar la conversión de matriz a PNG
-  
-  // 1. Validar la matriz
-  // validarMatriz(matriz);
-  
+  // 1. Validar matriz de píxeles
+  validarMatriz(matriz);
+
   // 2. Obtener dimensiones
-  // const dims = obtenerDimensiones(matriz);
-  
-  // 3. Crear el PNG
-  // const png = new PNG({
-  //   width: dims.columnas,
-  //   height: dims.filas
-  // });
-  
-  // 4. Llenar png.data
-  // for (let y = 0; y < dims.filas; y++) {
-  //   for (let x = 0; x < dims.columnas; x++) {
-  //     const idx = (dims.columnas * y + x) << 2;
-  //     const pixel = matriz[y][x];
-  //     
-  //     png.data[idx] = limitarValorColor(pixel.r);
-  //     png.data[idx + 1] = limitarValorColor(pixel.g);
-  //     png.data[idx + 2] = limitarValorColor(pixel.b);
-  //     png.data[idx + 3] = limitarValorColor(pixel.a);
-  //   }
-  // }
-  
-  // 5. Asegurar que existe el directorio de salida
-  // asegurarDirectorio(path.dirname(rutaSalida));
-  
-  // 6. Guardar el archivo
-  // const buffer = PNG.sync.write(png);
-  // fs.writeFileSync(rutaSalida, buffer);
-  
-  // ESCRIBE TU CÓDIGO AQUÍ
+  const dims = obtenerDimensiones(matriz);
+  const { filas, columnas } = dims;
+
+  // 3. Crear nueva imagen PNG
+  const png = new PNG({
+    width: columnas,
+    height: filas
+  });
+
+  // 4. Llenar png.data con los valores RGBA de cada pixel
+  for (let y = 0; y < filas; y++) {
+    for (let x = 0; x < columnas; x++) {
+      const idx = (columnas * y + x) << 2; // index * 4
+      const pixel = matriz[y][x];
+
+      png.data[idx]     = limitarValorColor(pixel.r);
+      png.data[idx + 1] = limitarValorColor(pixel.g);
+      png.data[idx + 2] = limitarValorColor(pixel.b);
+      png.data[idx + 3] = limitarValorColor(pixel.a);
+    }
+  }
+
+  // 5. Asegurar que exista el directorio de salida
+  const dir = path.dirname(rutaSalida);
+  asegurarDirectorio(dir);
+
+  // 6. Guardar el archivo PNG
+  const buffer = PNG.sync.write(png);
+  fs.writeFileSync(rutaSalida, buffer);
 }
 
-/**
- * Ejercicio 1.3: Obtener un canal específico de color (5 puntos)
- * 
- * Extrae solo un canal (R, G, o B) de la imagen y crea una imagen en escala de grises
- * donde ese canal es el valor de gris.
- * 
- * @param {Array<Array<Object>>} matriz - Matriz de píxeles
- * @param {string} canal - 'r', 'g', o 'b'
- * @returns {Array<Array<Object>>} - Matriz con solo ese canal
- * 
- * @example
- * const matriz = imagenAMatriz('imagen.png');
- * const soloRojo = obtenerCanal(matriz, 'r');
- * // Si un pixel era {r:200, g:100, b:50, a:255}
- * // Ahora será {r:200, g:200, b:200, a:255} (gris)
- */
 function obtenerCanal(matriz, canal) {
-  // TODO: Implementar extracción de canal
-  
-  // 1. Validar parámetros
-  // if (!['r', 'g', 'b'].includes(canal)) {
-  //   throw new Error("El canal debe ser 'r', 'g', o 'b'");
-  // }
-  
-  // 2. Crear matriz resultado
-  // const resultado = copiarMatriz(matriz);
-  
-  // 3. Para cada pixel, usar solo el valor del canal seleccionado
-  // for (let i = 0; i < resultado.length; i++) {
-  //   for (let j = 0; j < resultado[i].length; j++) {
-  //     const valor = matriz[i][j][canal];
-  //     resultado[i][j] = {
-  //       r: valor,
-  //       g: valor,
-  //       b: valor,
-  //       a: matriz[i][j].a
-  //     };
-  //   }
-  // }
-  
-  return []; // REEMPLAZAR CON TU CÓDIGO
+  // 1. Validar canal
+  if (!['r', 'g', 'b'].includes(canal)) {
+    throw new Error("El canal debe ser 'r', 'g' o 'b'");
+  }
+
+  // 2. Crear copia de la matriz original
+  const resultado = copiarMatriz(matriz);
+
+  // 3. Convertir cada pixel usando solo ese canal
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const valor = matriz[i][j][canal];
+
+      resultado[i][j] = {
+        r: valor,
+        g: valor,
+        b: valor,
+        a: matriz[i][j].a
+      };
+    }
+  }
+
+  return resultado;
 }
 
-/**
- * Ejercicio 1.4: Obtener dimensiones de una imagen (5 puntos)
- * 
- * @param {string} rutaImagen - Ruta del archivo PNG
- * @returns {Object} - {ancho, alto, totalPixeles}
- * 
- * @example
- * const dims = obtenerDimensionesImagen('test.png');
- * // {ancho: 100, alto: 100, totalPixeles: 10000}
- */
+
 function obtenerDimensionesImagen(rutaImagen) {
-  // TODO: Obtener dimensiones sin cargar toda la imagen en memoria
-  
-  // Pista: Puedes cargar la imagen y usar obtenerDimensiones()
-  // o leer solo el header del PNG
-  
-  return { ancho: 0, alto: 0, totalPixeles: 0 }; // REEMPLAZAR
+  // Leer el archivo PNG
+  const buffer = fs.readFileSync(rutaImagen);
+  const png = PNG.sync.read(buffer);
+
+  // Obtener dimensiones
+  const ancho = png.width;
+  const alto = png.height;
+
+  return {
+    ancho,
+    alto,
+    totalPixeles: ancho * alto
+  };
 }
+
 
 // ============================================
 // SECCIÓN 2: OPERACIONES BÁSICAS (25 puntos)
@@ -235,23 +197,26 @@ function obtenerDimensionesImagen(rutaImagen) {
  * const oscuro = ajustarBrillo(matriz, 0.5);    // 50% más oscuro
  */
 function ajustarBrillo(matriz, factor) {
-  // TODO: Implementar ajuste de brillo
-  
-  // 1. Crear matriz resultado
-  // const resultado = copiarMatriz(matriz);
-  
-  // 2. Para cada pixel, multiplicar R, G, B por el factor
-  // for (let i = 0; i < resultado.length; i++) {
-  //   for (let j = 0; j < resultado[i].length; j++) {
-  //     resultado[i][j].r = limitarValorColor(matriz[i][j].r * factor);
-  //     resultado[i][j].g = limitarValorColor(matriz[i][j].g * factor);
-  //     resultado[i][j].b = limitarValorColor(matriz[i][j].b * factor);
-  //     // El canal alpha NO se modifica
-  //   }
-  // }
-  
-  return []; // REEMPLAZAR
+  // Crear una copia profunda de la matriz original
+  const resultado = copiarMatriz(matriz);
+
+  // Recorrer cada pixel
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const pixelOriginal = matriz[i][j];
+
+      resultado[i][j] = {
+        r: limitarValorColor(pixelOriginal.r * factor),
+        g: limitarValorColor(pixelOriginal.g * factor),
+        b: limitarValorColor(pixelOriginal.b * factor),
+        a: pixelOriginal.a // Alpha NO se modifica
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 2.2: Invertir colores (8 puntos)
@@ -272,10 +237,26 @@ function ajustarBrillo(matriz, factor) {
  * // Rojo (255,0,0) → Cian (0,255,255)
  */
 function invertirColores(matriz) {
-  // TODO: Implementar inversión de colores
-  
-  return []; // REEMPLAZAR
+  // Crear copia profunda para no modificar la matriz original
+  const resultado = copiarMatriz(matriz);
+
+  // Recorrer cada pixel
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const p = matriz[i][j];
+
+      resultado[i][j] = {
+        r: 255 - p.r,
+        g: 255 - p.g,
+        b: 255 - p.b,
+        a: p.a  // Alpha no cambia
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 2.3: Convertir a escala de grises (9 puntos)
@@ -292,17 +273,34 @@ function invertirColores(matriz) {
  * const grises = convertirEscalaGrises(matriz);
  */
 function convertirEscalaGrises(matriz) {
-  // TODO: Implementar conversión a escala de grises
-  
-  // Para cada pixel:
-  // 1. Calcular el valor de gris
-  // const gris = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
-  // 
-  // 2. Asignar ese valor a los tres canales
-  // pixelNuevo = {r: gris, g: gris, b: gris, a: pixel.a}
-  
-  return []; // REEMPLAZAR
+  // Crear una copia profunda de la matriz original
+  const resultado = copiarMatriz(matriz);
+
+  // Recorrer cada pixel
+  for (let i = 0; i < resultado.length; i++) {
+    for (let j = 0; j < resultado[i].length; j++) {
+      const pixel = matriz[i][j];
+
+      // Calcular gris usando promedio ponderado
+      const gris = Math.round(
+        0.299 * pixel.r +
+        0.587 * pixel.g +
+        0.114 * pixel.b
+      );
+
+      // Asignar gris a todos los canales excepto alpha
+      resultado[i][j] = {
+        r: limitarValorColor(gris),
+        g: limitarValorColor(gris),
+        b: limitarValorColor(gris),
+        a: pixel.a
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 // ============================================
 // SECCIÓN 3: TRANSFORMACIONES GEOMÉTRICAS (30 puntos)
@@ -325,13 +323,17 @@ function convertirEscalaGrises(matriz) {
  * const espejo = voltearHorizontal(matriz);
  */
 function voltearHorizontal(matriz) {
-  // TODO: Implementar volteo horizontal
-  
-  // Pista: Puedes usar .reverse() en cada fila
-  // o construir manualmente invirtiendo el orden
-  
-  return []; // REEMPLAZAR
+  // Crear copia profunda para no modificar la original
+  const resultado = copiarMatriz(matriz);
+
+  // Invertir cada fila (efecto espejo)
+  for (let i = 0; i < resultado.length; i++) {
+    resultado[i].reverse(); 
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 3.2: Voltear vertical (10 puntos)
@@ -349,10 +351,15 @@ function voltearHorizontal(matriz) {
  * const invertido = voltearVertical(matriz);
  */
 function voltearVertical(matriz) {
-  // TODO: Implementar volteo vertical
-  
-  return []; // REEMPLAZAR
+  // Crear copia profunda
+  const resultado = copiarMatriz(matriz);
+
+  // Invertir el orden de las filas (arriba ↔ abajo)
+  resultado.reverse();
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 3.3: Rotar 90 grados en sentido horario (10 puntos)
@@ -374,14 +381,23 @@ function voltearVertical(matriz) {
  * const rotada = rotar90Grados(matriz);
  */
 function rotar90Grados(matriz) {
-  // TODO: Implementar rotación de 90 grados
-  
-  // Opción 1: Hacer transpuesta manualmente considerando que son objetos
-  // Opción 2: Construir directamente la matriz rotada
-  //   nuevoPixel[j][alto - 1 - i] = pixelOriginal[i][j]
-  
-  return []; // REEMPLAZAR
+  const alto = matriz.length;
+  const ancho = matriz[0].length;
+
+  // Nueva matriz rotada: dimensiones intercambiadas
+  const rotada = [];
+
+  for (let j = 0; j < ancho; j++) {
+    const nuevaFila = [];
+    for (let i = alto - 1; i >= 0; i--) {
+      nuevaFila.push(matriz[i][j]);
+    }
+    rotada.push(nuevaFila);
+  }
+
+  return rotada;
 }
+
 
 // ============================================
 // SECCIÓN 4: FILTROS AVANZADOS (25 puntos)
@@ -408,22 +424,39 @@ function rotar90Grados(matriz) {
  * const mezcla = mezclarImagenes(imagen1, imagen2, 0.5); // 50/50
  */
 function mezclarImagenes(matriz1, matriz2, factor) {
-  // TODO: Implementar mezcla de imágenes
-  
-  // 1. Verificar que tengan las mismas dimensiones
-  // const dims1 = obtenerDimensiones(matriz1);
-  // const dims2 = obtenerDimensiones(matriz2);
-  // if (dims1.filas !== dims2.filas || dims1.columnas !== dims2.columnas) {
-  //   throw new Error('Las imágenes deben tener el mismo tamaño');
-  // }
-  
-  // 2. Para cada pixel:
-  // r = r1 * (1 - factor) + r2 * factor
-  // g = g1 * (1 - factor) + g2 * factor
-  // b = b1 * (1 - factor) + b2 * factor
-  
-  return []; // REEMPLAZAR
+  // Validar factor
+  if (factor < 0 || factor > 1) {
+    throw new Error("El factor debe estar entre 0.0 y 1.0");
+  }
+
+  // Verificar dimensiones iguales
+  const dims1 = obtenerDimensiones(matriz1);
+  const dims2 = obtenerDimensiones(matriz2);
+
+  if (dims1.filas !== dims2.filas || dims1.columnas !== dims2.columnas) {
+    throw new Error("Las imágenes deben tener el mismo tamaño");
+  }
+
+  // Crear matriz mezclada
+  const resultado = crearMatrizVacia(dims1.filas, dims1.columnas);
+
+  for (let i = 0; i < dims1.filas; i++) {
+    for (let j = 0; j < dims1.columnas; j++) {
+      const p1 = matriz1[i][j];
+      const p2 = matriz2[i][j];
+
+      resultado[i][j] = {
+        r: limitarValorColor(p1.r * (1 - factor) + p2.r * factor),
+        g: limitarValorColor(p1.g * (1 - factor) + p2.g * factor),
+        b: limitarValorColor(p1.b * (1 - factor) + p2.b * factor),
+        a: limitarValorColor(p1.a * (1 - factor) + p2.a * factor)
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 4.2: Filtro Sepia (9 puntos)
@@ -442,10 +475,36 @@ function mezclarImagenes(matriz1, matriz2, factor) {
  * const vintage = aplicarSepia(matriz);
  */
 function aplicarSepia(matriz) {
-  // TODO: Implementar filtro sepia
-  
-  return []; // REEMPLAZAR
+  const filas = matriz.length;
+  const columnas = matriz[0].length;
+
+  const resultado = crearMatrizVacia(filas, columnas);
+
+  for (let i = 0; i < filas; i++) {
+    for (let j = 0; j < columnas; j++) {
+      const pixel = matriz[i][j];
+
+      // Calcular valores sepia
+      const r = pixel.r;
+      const g = pixel.g;
+      const b = pixel.b;
+
+      const nuevoR = limitarValorColor(0.393 * r + 0.769 * g + 0.189 * b);
+      const nuevoG = limitarValorColor(0.349 * r + 0.686 * g + 0.168 * b);
+      const nuevoB = limitarValorColor(0.272 * r + 0.534 * g + 0.131 * b);
+
+      resultado[i][j] = {
+        r: nuevoR,
+        g: nuevoG,
+        b: nuevoB,
+        a: pixel.a
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 /**
  * Ejercicio 4.3: Detectar bordes (simplificado) (8 puntos)
@@ -468,17 +527,46 @@ function aplicarSepia(matriz) {
  * const bordes = detectarBordes(matriz, 50);
  */
 function detectarBordes(matriz, umbral = 50) {
-  // TODO: Implementar detección de bordes
-  
-  // 1. Convertir a escala de grises primero
-  // const grises = convertirEscalaGrises(matriz);
-  
-  // 2. Para cada pixel (excepto bordes de la imagen):
-  //    - Comparar con pixel derecho y pixel inferior
-  //    - Si diferencia > umbral, marcar como borde
-  
-  return []; // REEMPLAZAR
+  // 1. Convertir la imagen a escala de grises
+  const grises = convertirEscalaGrises(matriz);
+
+  const filas = grises.length;
+  const columnas = grises[0].length;
+
+  // 2. Crear matriz resultado
+  const resultado = crearMatrizVacia(filas, columnas);
+
+  // 3. Recorrer cada pixel excepto la última fila y última columna
+  for (let i = 0; i < filas; i++) {
+    for (let j = 0; j < columnas; j++) {
+      let borde = 0; // negro por defecto
+
+      if (i < filas - 1 && j < columnas - 1) {
+        const pixel = grises[i][j].r;
+        const derecha = grises[i][j + 1].r;
+        const abajo = grises[i + 1][j].r;
+
+        const dif1 = Math.abs(pixel - derecha);
+        const dif2 = Math.abs(pixel - abajo);
+
+        if (dif1 > umbral || dif2 > umbral) {
+          borde = 255; // blanco → borde detectado
+        }
+      }
+
+      // 4. Guardar pixel resultante (blanco o negro)
+      resultado[i][j] = {
+        r: borde,
+        g: borde,
+        b: borde,
+        a: matriz[i][j].a  // conservar alpha
+      };
+    }
+  }
+
+  return resultado;
 }
+
 
 // ============================================
 // NO MODIFICAR - Exportación de funciones
