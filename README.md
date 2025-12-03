@@ -1,107 +1,52 @@
-# Editor de Imágenes con Álgebra Matricial
+# Ejercicios de Sistemas de Ecuaciones
 
-**Fundamentos de Álgebra - Unidad III: Álgebra Lineal Aplicada**  
-Tecnológico de Software
+## Ejercicio 1: Resolver con todos los métodos
 
----
-
-## Objetivo
-
-Manipular imágenes PNG aplicando operaciones matriciales del álgebra lineal.
-
----
-
-## Instrucciones
-
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/TU-USUARIO/editor-imagenes-matricial.git
-cd editor-imagenes-matricial
-npm install
+Sistema:
+```
+x + y + z = 6
+2x - y + z = 3
+x + 2y - z = 2
 ```
 
-### 2. Completar los ejercicios
-- Abre el archivo `src/ejercicios.js`
-- Completa cada función donde dice `// TODO:`
-- **NO modifiques** los archivos `utilidades.js`, `matriz.js` ni los tests
+**Solución: x = 1, y = 2, z = 3**
 
-### 3. Probar tu código
-```bash
-npm test
+(Todos los métodos dan el mismo resultado)
+
+---
+
+## Ejercicio 2: Identificar tipo de solución
+
+**a) x + y = 3, 2x + 2y = 6**
+- Infinitas soluciones
+
+**b) x + y = 3, 2x + 2y = 7**
+- Sin solución
+
+**c) x + y = 3, x - y = 1**
+- Solución única: x = 2, y = 1
+
+---
+
+## Ejercicio 3: Sistema 4×4
+
+Sistema:
+```
+x + y + z + w = 10
+2x + y - z + w = 5
+x - y + z - w = 1
+x + y - z + 2w = 8
 ```
 
-### 4. Guardar tus cambios
-```bash
-git add src/ejercicios.js
-git commit -m "Completar ejercicios de la sección X"
-git push origin main
-```
-
-### 5. Ver tu calificación
-- Ve a tu repositorio en GitHub
-- Click en la pestaña **Actions**
-- Tu calificación aparecerá en los resultados
+**Solución: x = 2, y = -0.5, z = 3.5, w = 5**
 
 ---
 
-## Sistema de Calificación
+## Ejercicio 4: Aplicación práctica
 
-| Sección | Puntos |
-|---------|--------|
-| 1. Commits bien documentados | 20 pts |
-| 2. README actualizado y personalizado | 25 pts |
-| 3. Editor funcional | 30 pts |
-| 4. Funciones bien documentadas | 25 pts |
-| **TOTAL** | **100 pts** |
+Producción de Premium, Standard y Utilitario con materias primas disponibles.
 
----
-
-## Estructura del Proyecto
-
-```
-src/
-├── ejercicios.js          ← COMPLETA ESTE ARCHIVO
-├── ejercicios.test.js     ← NO MODIFICAR
-├── utilidades.js          ← NO MODIFICAR (funciones auxiliares)
-└── matriz.js              ← NO MODIFICAR (operaciones matriciales)
-
-imagenes/
-├── entrada/               ← Imágenes de prueba
-└── salida/                ← Resultados generados
-
-guias/
-├── GUIA_ESTUDIANTES.md    ← Ayuda detallada
-├── GUIA_INSTRUCTOR.md     ← Soluciones (solo instructor)
-└── CONCEPTOS_ALGEBRA.md   ← Teoría de álgebra lineal
-```
-
----
-
-## Recursos
-
-- **Guía Estudiantes:** `guias/GUIA_ESTUDIANTES.md`
-- **Conceptos Álgebra:** `guias/CONCEPTOS_ALGEBRA.md`
-- **Documentación pngjs:** [npmjs.com/package/pngjs](https://www.npmjs.com/package/pngjs)
-
----
-
-## Reglas Importantes
-
-1. ✅ Solo modifica `src/ejercicios.js`
-2. ❌ No modifiques los archivos de tests
-3. ❌ No modifiques `utilidades.js` ni `matriz.js`
-4. ✅ Puedes hacer múltiples commits
-5. ✅ Todos los tests deben pasar para obtener puntos
-
----
-
-## ¿Necesitas Ayuda?
-
-1. Lee `guias/GUIA_ESTUDIANTES.md`
-2. Consulta `guias/CONCEPTOS_ALGEBRA.md`
-3. Pregunta a tus compañeros
-4. Contacta al profesor: jorge.pedroza@tecdesoftware.edu.mx
-
----
-
-**¡Éxito en tu proyecto!**
+**Solución:**
+- Premium: 20 unidades
+- Standard: 10 unidades
+- Utilitario: 10 unidades
