@@ -1,6 +1,6 @@
 // ============================================
 // EDITOR DE IMÁGENES CON ÁLGEBRA MATRICIAL
-// ============================================
+// ===========================================
 // Nombre del estudiante: Patricio Medina Batun 
 // Fecha: 18/11/2025
 // Grupo: 1B
